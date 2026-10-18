@@ -59,3 +59,18 @@ test('a glow with only a colour still renders, using defaults', async ({ page })
   expect(errors).toEqual([]);
   expect((await stage(page).screenshot()).equals(base)).toBe(false);
 });
+
+test('a still card stops redrawing until its config changes', async ({ page }) => {
+  await page.addInitScript(() => {
+    const draw = WebGLRenderingContext.prototype.drawArrays;
+    window.__draws = 0;
+    WebGLRenderingContext.prototype.drawArrays = function (...args) { window.__draws++; return draw.apply(this, args); };
+  });
+  await openStill(page);
+  await page.evaluate(() => { window.__draws = 0; });
+  await frames(page, 10);
+  expect(await page.evaluate(() => window.__draws)).toBe(0);
+  await page.evaluate(() => { document.getElementById('lg-stage').lgConfig.glass.refraction = 40; });
+  await frames(page);
+  expect(await page.evaluate(() => window.__draws)).toBeGreaterThan(0);
+});

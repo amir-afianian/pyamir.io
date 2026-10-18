@@ -121,10 +121,11 @@ void main(){
   let W=0,H=0,dpr=1,cx=cfg.card.x,cy=cfg.card.y,t=0,last=performance.now();
   function size(){dpr=Math.min(devicePixelRatio||1,2);const r=stage.getBoundingClientRect();W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);gl.viewport(0,0,cv.width,cv.height);}
   new ResizeObserver(size).observe(stage);size();
-  // After Effects overshoot expression (freq 1.5, amplitude 0.1, decay 4.5), ported
+  // After Effects overshoot expression (freq 1.5, amplitude 0.1, decay 4.5), ported. It ends at exactly 1 after 2.5 s,
+  // when the overshoot is under 1e-4, so a settled card can stop redrawing.
   let t0=performance.now()+300;
   function scaleY(now){if(!cfg.motion.bounceIn||reduce)return 1;const s=(now-t0)/1000;if(s<0)return .02;const d=.28;
-    if(s<d){const x=s/d;return .02+.98*x*x*(3-2*x);}const u=s-d;return 1+(.98/d*1.5)*.1*Math.sin(1.5*u*2*Math.PI)/Math.exp(4.5*u);}
+    if(s<d){const x=s/d;return .02+.98*x*x*(3-2*x);}if(s>2.5)return 1;const u=s-d;return 1+(.98/d*1.5)*.1*Math.sin(1.5*u*2*Math.PI)/Math.exp(4.5*u);}
   stage.lgReplay=()=>{t0=performance.now();};
   const card=()=>{const w=Math.min(cfg.card.width,W*.9),h=Math.min(cfg.card.height,H*.8);return{w,h,x:cx*W,y:cy*H};};
   let drag=null;
@@ -135,14 +136,19 @@ void main(){
       cx=Math.min(Math.max((e.clientX-r.left-drag.dx)/W,c.w/2/W),1-c.w/2/W);cy=Math.min(Math.max((e.clientY-r.top-drag.dy)/H,c.h/2/H),1-c.h/2/H);});
     ['pointerup','pointercancel'].forEach(v=>stage.addEventListener(v,()=>drag=null));
   }
+  // A still card is redrawn only when its config, position or size changes, so an idle card costs no GPU time.
+  let drawn='';
   function frame(now){
     t+=(now-last)/1000;last=now;const c=card(),sy=Math.max(scaleY(now),.02);
-    gl.uniform2f(U('R'),cv.width,cv.height);gl.uniform1f(U('T'),t+3);gl.uniform1f(U('dpr'),dpr);
-    gl.uniform1f(U('sy'),sy);gl.uniform2f(U('C'),c.x*dpr,c.y*dpr);gl.uniform2f(U('S'),c.w*dpr,c.h*dpr);
-    uploadConfig();
-    gl.drawArrays(gl.TRIANGLES,0,3);
-    Object.assign(ui.style,{width:c.w+'px',height:c.h+'px',borderRadius:Math.min(c.w*cfg.card.radius,c.h/2)+'px',
-      transform:`translate(${c.x-c.w/2}px,${c.y-c.h/2}px) scaleY(${sy})`,opacity:Math.min(1,Math.max(0,(sy-.3)/.5))});
+    const animating=sy!==1||(cfg.motion.driftGlows&&!reduce), key=animating?'':JSON.stringify([cfg,c,cv.width,cv.height]);
+    if(animating||key!==drawn){drawn=key;
+      gl.uniform2f(U('R'),cv.width,cv.height);gl.uniform1f(U('T'),t+3);gl.uniform1f(U('dpr'),dpr);
+      gl.uniform1f(U('sy'),sy);gl.uniform2f(U('C'),c.x*dpr,c.y*dpr);gl.uniform2f(U('S'),c.w*dpr,c.h*dpr);
+      uploadConfig();
+      gl.drawArrays(gl.TRIANGLES,0,3);
+      Object.assign(ui.style,{width:c.w+'px',height:c.h+'px',borderRadius:Math.min(c.w*cfg.card.radius,c.h/2)+'px',
+        transform:`translate(${c.x-c.w/2}px,${c.y-c.h/2}px) scaleY(${sy})`,opacity:Math.min(1,Math.max(0,(sy-.3)/.5))});
+    }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
