@@ -3,7 +3,7 @@
 // config in lockstep. Codex caches plugins by version and Claude Code
 // compares versions to offer updates, so any drift silently strands users.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const MAX_DESCRIPTION_LENGTH = 1024;
@@ -64,15 +64,15 @@ function checkSkill(skillFile, folderName) {
   }
 }
 
-function checkReleaseConfig(dir, manifestFiles) {
-  const releasePackage = releaseConfig?.packages?.[dir];
+function checkReleaseConfig(project, manifestFiles) {
+  const releasePackage = releaseConfig?.packages?.[project];
   if (!releasePackage) {
-    fail(`release-please-config.json: no package "${dir}"`);
+    fail(`release-please-config.json: no package "${project}"`);
     return;
   }
   const bumped = new Set((releasePackage["extra-files"] ?? []).map((file) => file.path));
   for (const file of manifestFiles) {
-    if (!bumped.has(file)) fail(`release-please-config.json "${dir}" extra-files: ${file} is never bumped`);
+    if (!bumped.has(file)) fail(`release-please-config.json "${project}" extra-files: ${file} is never bumped`);
   }
 }
 
@@ -83,12 +83,16 @@ function checkPlugin(name, source, codexSource) {
   }
   expectEqual(`.agents/plugins/marketplace.json ${name} source`, codexSource, source);
 
+  // The marketplace source is what installs; the release package is the top-level folder around it.
   const dir = source.slice(2);
-  const manifestFiles = [".claude-plugin/plugin.json", ".codex-plugin/plugin.json"];
-  const [claudeFile, codexFile] = manifestFiles.map((file) => `${dir}/${file}`);
+  const project = dir.split("/")[0];
+  if (existsSync(join(dir, "package.json"))) {
+    fail(`${dir}/package.json: Claude Code runs npm install for a plugin folder with a package.json; keep dev tooling outside ${dir}`);
+  }
+  const [claudeFile, codexFile] = [".claude-plugin/plugin.json", ".codex-plugin/plugin.json"].map((file) => `${dir}/${file}`);
   const claudePlugin = readJson(claudeFile);
   const codexPlugin = readJson(codexFile);
-  checkReleaseConfig(dir, manifestFiles);
+  checkReleaseConfig(project, [claudeFile, codexFile].map((file) => relative(project, file)));
 
   for (const [file, plugin] of [[claudeFile, claudePlugin], [codexFile, codexPlugin]]) {
     if (!plugin) continue;
@@ -101,7 +105,7 @@ function checkPlugin(name, source, codexSource) {
   const versions = [
     [claudeFile, claudePlugin?.version],
     [codexFile, codexPlugin?.version],
-    [`.release-please-manifest.json "${dir}"`, releaseManifest?.[dir]],
+    [`.release-please-manifest.json "${project}"`, releaseManifest?.[project]],
   ];
   if (new Set(versions.map(([, v]) => v)).size !== 1) {
     fail(`${name} versions differ: ${versions.map(([file, v]) => `${file} is ${v}`).join(", ")}`);

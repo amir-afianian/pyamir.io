@@ -37,7 +37,7 @@ test("the repo's own manifests pass", (t) => {
 
 test("a plugin version that drifts from the release manifest fails", (t) => {
   const result = checkCopy(t, (dir) =>
-    editJson(join(dir, "liquid-glass-card/.codex-plugin/plugin.json"), (p) => { p.version = "9.9.9"; }),
+    editJson(join(dir, "liquid-glass-card/plugin/.codex-plugin/plugin.json"), (p) => { p.version = "9.9.9"; }),
   );
   assert.equal(result.status, 1);
   assert.match(result.stderr, /liquid-glass-card versions differ/);
@@ -69,9 +69,15 @@ test("a plugin missing from the release-please config fails", (t) => {
 
 test("a skill whose frontmatter name differs from its folder fails", (t) => {
   const result = checkCopy(t, (dir) => {
-    const skill = join(dir, "liquid-glass-card/skills/liquid-glass-card/SKILL.md");
+    const skill = join(dir, "liquid-glass-card/plugin/skills/liquid-glass-card/SKILL.md");
     writeFileSync(skill, readFileSync(skill, "utf8").replace(/^name: .*$/m, "name: other-name"));
   });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /SKILL\.md frontmatter name: expected "liquid-glass-card"/);
+});
+
+test("a package.json inside the plugin folder fails, because Claude Code would npm install it", (t) => {
+  const result = checkCopy(t, (dir) => writeFileSync(join(dir, "liquid-glass-card/plugin/package.json"), "{}"));
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /liquid-glass-card\/plugin\/package\.json: Claude Code runs npm install/);
 });

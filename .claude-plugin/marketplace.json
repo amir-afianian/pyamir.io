@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "liquid-glass-card",
-      "source": "./liquid-glass-card",
+      "source": "./liquid-glass-card/plugin",
       "description": "Real refraction, not just blur: a WebGL liquid glass card with a specular rim and bounce-in, for web, SwiftUI and Claude Design.",
       "category": "design"
     }

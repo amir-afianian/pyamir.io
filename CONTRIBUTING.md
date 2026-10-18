@@ -2,7 +2,7 @@
 
 Thanks for helping out. The short version: write Conventional Commits, keep the tests and the manifest check green, and let the release PR do the versioning.
 
-Each entry in `.claude-plugin/marketplace.json` is one plugin, living in the top-level folder its `source` names. The Codex marketplace lists the same folders, and each plugin is versioned and released on its own.
+Each entry in `.claude-plugin/marketplace.json` is one plugin. Its `source` names the folder that installs, `<plugin>/plugin/`, which holds only the manifests, `skills/` and a LICENSE; the README, tests, demo site and tooling sit around it in `<plugin>/`, so none of them reach users. The Codex marketplace lists the same folders, and each plugin is versioned and released on its own.
 
 ## Commits
 
@@ -59,7 +59,7 @@ npm run render:media -- hero gallery  # or only some
 ## Releases
 
 1. Merge Conventional Commits into `main`.
-2. release-please opens (and keeps updating) one release PR covering every plugin with releasable changes. For each, it bumps `<plugin>/.claude-plugin/plugin.json`, `<plugin>/.codex-plugin/plugin.json` and the plugin's entry in `.release-please-manifest.json`, and writes `<plugin>/CHANGELOG.md`.
+2. release-please opens (and keeps updating) one release PR covering every plugin with releasable changes. For each, it bumps `<plugin>/plugin/.claude-plugin/plugin.json`, `<plugin>/plugin/.codex-plugin/plugin.json` and the plugin's entry in `.release-please-manifest.json`, and writes `<plugin>/CHANGELOG.md`.
 3. Merging the release PR cuts a tag named `<plugin>-vX.Y.Z` and its GitHub Release. For `liquid-glass-card`, a follow-up job builds `liquid-glass-card/dist/liquid-glass-card.zip` (the skill folder at the archive root, ready for claude.ai's skill upload) and attaches it to that release.
 
 The default token cannot trigger CI on the release PR. Add a `RELEASE_PLEASE_TOKEN` repository secret (a PAT or app token with contents and pull-requests write) if you want checks to run on it. The repository setting "Allow GitHub Actions to create and approve pull requests" must be on.
@@ -97,8 +97,8 @@ codex plugin marketplace add /path/to/pyamir.io
 
 ## Adding a plugin
 
-1. Create a top-level folder named after the plugin, with `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `skills/<skill-name>/SKILL.md`.
-2. List it in `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json` with `"./<plugin>"` as its source.
-3. Add it to `release-please-config.json` (copy the `liquid-glass-card` block and change the paths) and give it `"0.1.0"` in `.release-please-manifest.json`.
+1. Create `<plugin>/plugin/` with `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `skills/<skill-name>/SKILL.md` and a LICENSE. Keep `package.json` and every other development file out of it: Claude Code runs `npm install` for any plugin folder that has a `package.json`.
+2. List it in `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json` with `"./<plugin>/plugin"` as its source.
+3. Add `<plugin>` to `release-please-config.json` (copy the `liquid-glass-card` block) and give it `"0.1.0"` in `.release-please-manifest.json`.
 4. Run `node scripts/check-manifests.mjs`; it fails until all of the above agree.
 5. If it has tests, a demo site or a release zip, add a test job to `.github/workflows/ci.yml`, build its site in `scripts/build-pages.mjs` (it is then served at `pyamir.io/<plugin>/`), and add its zip to `.github/workflows/release-please.yml`.

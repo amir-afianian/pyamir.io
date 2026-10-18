@@ -9,7 +9,7 @@ An agent skill that builds liquid glass cards for the web, SwiftUI and Claude De
 
 [![CI](https://github.com/amir-afianian/pyamir.io/actions/workflows/ci.yml/badge.svg)](https://github.com/amir-afianian/pyamir.io/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/amir-afianian/pyamir.io?filter=liquid-glass-card-*&label=release&color=0a0a0f)](https://github.com/amir-afianian/pyamir.io/releases?q=liquid-glass-card)
-[![License: MIT](https://img.shields.io/badge/license-MIT-0a0a0f)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0a0a0f)](plugin/LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-0a0a0f)](https://agentskills.io)
 
 [**Open the playground**](https://pyamir.io/liquid-glass-card/) · [Install](#install) · [How it works](#how-it-works) · [Tuning](#tuning)
@@ -117,7 +117,7 @@ glass: { refraction: 20, dispersion: 0, frost: 14, lightAngle: 300, tint: "#0a0a
 
 ## Development
 
-The skill lives in [`skills/liquid-glass-card/`](skills/liquid-glass-card/), the playground in [`site/`](site/), and the tests in [`tests/`](tests/). The images in this README are rendered from the real template by `node scripts/render-media.mjs`. Commit conventions, checks and the release flow are in [CONTRIBUTING.md](../CONTRIBUTING.md).
+What installs is [`plugin/`](plugin/): the two plugin manifests and the skill in [`plugin/skills/liquid-glass-card/`](plugin/skills/liquid-glass-card/). Everything around it stays out of your agent: the playground in [`site/`](site/), the tests in [`tests/`](tests/) and the tooling in [`scripts/`](scripts/). The images in this README are rendered from the real template by `node scripts/render-media.mjs`. Commit conventions, checks and the release flow are in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Credits
 
@@ -125,4 +125,4 @@ The look comes from Stephan Zammit's After Effects tutorial [Vibrant Glass UI](h
 
 ## License
 
-[MIT](LICENSE) © 2026 Amir Afianian
+[MIT](plugin/LICENSE) © 2026 Amir Afianian

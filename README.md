@@ -38,7 +38,8 @@ Each skill's README has its exact commands and a zip for claude.ai.
 
 ```
 .claude-plugin/, .agents/plugins/   the Claude Code and Codex marketplaces
-<skill>/                            one folder per skill: skills/, tests, demo site, its own README
+<skill>/plugin/                     what installs: the plugin manifests and skills/
+<skill>/                            around it: README, tests, demo site, tooling
 media/<skill>/                      README images, rendered from the real templates
 scripts/                            manifest checks, the pyamir.io build and deploy
 ```

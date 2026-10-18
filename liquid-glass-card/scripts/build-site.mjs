@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const TEMPLATE = path.join(root, 'skills/liquid-glass-card/assets/liquid-glass-card.html');
+export const TEMPLATE = path.join(root, 'plugin/skills/liquid-glass-card/assets/liquid-glass-card.html');
 
 // The playground never carries its own copy of the card: _site/template.html is always the skill's asset.
 export function buildSite(out = path.join(root, '_site')) {

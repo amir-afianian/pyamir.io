@@ -8,7 +8,7 @@
       "name": "liquid-glass-card",
       "source": {
         "source": "local",
-        "path": "./liquid-glass-card"
+        "path": "./liquid-glass-card/plugin"
       },
       "policy": {
         "installation": "AVAILABLE",
