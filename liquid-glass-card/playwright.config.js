@@ -15,6 +15,8 @@ export default defineConfig({
     viewport: { width: 1000, height: 700 },
     // SwiftShader gives WebGL on CI runners without a GPU and makes renders reproducible.
     launchOptions: { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] },
+    // CI-only failures can't be reproduced locally, so a failing CI test keeps its trace for the uploaded artifact.
+    trace: process.env.CI ? 'retain-on-failure' : 'off',
   },
   // The site tests need http:// (file:// iframes are cross-origin in Chromium); serve-site rebuilds _site first, so `npx playwright test` needs no extra step.
   webServer: {
