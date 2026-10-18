@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import { TEMPLATE, collectErrors, frames as framesIn, freezeMotion, readConfig } from './helpers.js';
 
+// The template skips its bounce and glow drift under reduced motion, so no test here pays for animation it doesn't check.
+test.use({ reducedMotion: 'reduce' });
+
 const stage = page => page.frameLocator('#lg-frame').locator('#lg-stage');
 // The template's rAF loop runs inside the iframe, so waits and config reads target that frame.
 const templateFrame = page => page.frame({ url: /\/template\.html$/ });
