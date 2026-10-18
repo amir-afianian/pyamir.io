@@ -1,0 +1,40 @@
+{
+  "name": "liquid-glass-card",
+  "version": "0.1.0",
+  "description": "Real refraction, not just blur: a WebGL liquid glass card with a specular rim and bounce-in, for web, SwiftUI and Claude Design.",
+  "author": {
+    "name": "Amir Afianian",
+    "url": "https://github.com/amir-afianian"
+  },
+  "homepage": "https://pyamir.io/liquid-glass-card/",
+  "repository": "https://github.com/amir-afianian/pyamir.io",
+  "license": "MIT",
+  "keywords": [
+    "liquid-glass",
+    "glassmorphism",
+    "webgl",
+    "shader",
+    "ui",
+    "card",
+    "swiftui",
+    "skill"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Liquid Glass Card",
+    "shortDescription": "Real-refraction liquid glass cards for web and SwiftUI",
+    "longDescription": "Build a polished liquid glass card from a one-line request: frosted, light-bending glass over a soft colour glow, with a specular rim and an overshoot bounce-in. Ships a self-contained WebGL template for the web, native Liquid Glass for SwiftUI, and a CSS tier for glass over live page content.",
+    "developerName": "Amir Afianian",
+    "category": "Creativity",
+    "capabilities": [
+      "Write"
+    ],
+    "websiteURL": "https://pyamir.io/liquid-glass-card/",
+    "defaultPrompt": [
+      "Make a liquid glass card showing MRR $48k",
+      "A glass pricing card in blue",
+      "Liquid glass notification card for SwiftUI"
+    ],
+    "brandColor": "#07060c"
+  }
+}

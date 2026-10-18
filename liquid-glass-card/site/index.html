@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Liquid Glass Card</title>
+<meta name="description" content="An agent skill that builds a liquid glass card: frosted, light-bending glass over a soft colour glow. Tune the look here, then hand it to your agent.">
+<meta name="theme-color" content="#0a0910">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <a class="mark" href="./" aria-label="Liquid Glass Card">
+      <span class="mark-glyph" aria-hidden="true"></span>
+      <span>Liquid Glass Card</span>
+    </a>
+    <nav class="top-nav" aria-label="Page">
+      <a href="#install">Install</a>
+      <a href="https://github.com/amir-afianian/pyamir.io/tree/main/liquid-glass-card">GitHub<span aria-hidden="true"> ↗</span></a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <h1>Real refraction, <span>not just blur.</span></h1>
+    <p>An agent skill that builds a frosted, light-bending glass card. Tune the look below, then copy it as a prompt for your agent or as a finished page.</p>
+  </section>
+
+  <main class="bench">
+    <div class="stage-col">
+      <div class="pickers">
+      <div class="presets" role="group" aria-label="Presets">
+        <button type="button" data-preset="original" aria-pressed="false">Original</button>
+        <button type="button" data-preset="apple-clear" aria-pressed="false">Apple clear</button>
+        <button type="button" data-preset="showy-liquid" aria-pressed="false">Showy liquid</button>
+        <button type="button" data-preset="rainbow-edge" aria-pressed="false">Rainbow edge</button>
+      </div>
+      <div class="chips" role="group" aria-label="Card content">
+        <span class="chips-label" aria-hidden="true">Card</span>
+        <button type="button" data-card="metric" aria-pressed="false">Metric</button>
+        <button type="button" data-card="profile" aria-pressed="false">Profile</button>
+        <button type="button" data-card="pricing" aria-pressed="false">Pricing</button>
+        <button type="button" data-card="notification" aria-pressed="false">Notification</button>
+      </div>
+      </div>
+
+      <iframe id="lg-frame" class="stage-frame" src="template.html" title="Live liquid glass card. Drag the card to move it."></iframe>
+
+      <div class="actions">
+        <button type="button" class="btn primary" id="btn-copy-prompt">Copy agent prompt</button>
+        <button type="button" class="btn" id="btn-copy-html">Copy HTML</button>
+        <button type="button" class="btn" id="btn-copy-link">Copy link</button>
+        <button type="button" class="btn ghost" id="btn-replay">Replay bounce</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+      <label class="fallback" for="fallback-copy" hidden>
+        Select all and copy
+        <textarea id="fallback-copy" readonly rows="3"></textarea>
+      </label>
+    </div>
+
+    <aside class="controls" aria-label="Glass controls">
+      <fieldset>
+        <legend>Glass</legend>
+        <div class="row">
+          <label for="ctl-refraction">Refraction</label>
+          <output id="out-refraction" for="ctl-refraction"></output>
+          <input id="ctl-refraction" type="range" data-key="r">
+        </div>
+        <div class="row">
+          <label for="ctl-frost">Frost</label>
+          <output id="out-frost" for="ctl-frost"></output>
+          <input id="ctl-frost" type="range" data-key="f">
+        </div>
+        <div class="row">
+          <label for="ctl-dispersion">Dispersion</label>
+          <output id="out-dispersion" for="ctl-dispersion"></output>
+          <input id="ctl-dispersion" type="range" data-key="d">
+        </div>
+        <div class="row">
+          <label for="ctl-tintAmount">Tint amount</label>
+          <output id="out-tintAmount" for="ctl-tintAmount"></output>
+          <input id="ctl-tintAmount" type="range" data-key="t">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Light</legend>
+        <div class="row">
+          <label for="ctl-lightAngle">Light angle</label>
+          <output id="out-lightAngle" for="ctl-lightAngle" data-unit="°"></output>
+          <input id="ctl-lightAngle" type="range" data-key="l">
+        </div>
+        <div class="row switch-row">
+          <label for="ctl-dotGrid">Dot grid</label>
+          <input id="ctl-dotGrid" class="switch" type="checkbox" role="switch">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Glows</legend>
+        <div class="glow" data-glow="0">
+          <input id="glow-0-color" class="swatch" type="color" aria-label="Glow 1 colour">
+          <label for="glow-0-intensity">Glow 1</label>
+          <output id="out-glow-0" for="glow-0-intensity"></output>
+          <input id="glow-0-intensity" type="range">
+        </div>
+        <div class="glow" data-glow="1">
+          <input id="glow-1-color" class="swatch" type="color" aria-label="Glow 2 colour">
+          <label for="glow-1-intensity">Glow 2</label>
+          <output id="out-glow-1" for="glow-1-intensity"></output>
+          <input id="glow-1-intensity" type="range">
+        </div>
+        <div class="glow" data-glow="2">
+          <input id="glow-2-color" class="swatch" type="color" aria-label="Glow 3 colour">
+          <label for="glow-2-intensity">Glow 3</label>
+          <output id="out-glow-2" for="glow-2-intensity"></output>
+          <input id="glow-2-intensity" type="range">
+        </div>
+      </fieldset>
+
+    </aside>
+  </main>
+
+  <section class="install" id="install" aria-labelledby="install-h">
+    <div class="install-head">
+      <h2 id="install-h">Install the skill</h2>
+      <p>Pick the route that matches where your agent runs. <a href="https://github.com/amir-afianian/pyamir.io/tree/main/liquid-glass-card">Source on GitHub<span aria-hidden="true"> ↗</span></a></p>
+    </div>
+    <div class="routes">
+      <article class="route">
+        <h3>Claude Code</h3>
+        <div class="cmd"><code>/plugin marketplace add amir-afianian/pyamir.io</code><button type="button" class="copy">Copy</button></div>
+        <div class="cmd"><code>/plugin install liquid-glass-card@pyamir</code><button type="button" class="copy">Copy</button></div>
+      </article>
+      <article class="route">
+        <h3>Codex</h3>
+        <div class="cmd"><code>codex plugin marketplace add amir-afianian/pyamir.io</code><button type="button" class="copy">Copy</button></div>
+        <div class="cmd"><code>codex plugin add liquid-glass-card@pyamir</code><button type="button" class="copy">Copy</button></div>
+      </article>
+      <article class="route">
+        <h3>Other agents</h3>
+        <div class="cmd"><code>npx skills add amir-afianian/pyamir.io --skill liquid-glass-card</code><button type="button" class="copy">Copy</button></div>
+        <p class="route-note">Works with any agent that reads <a href="https://agentskills.io">Agent Skills</a>.</p>
+      </article>
+      <article class="route">
+        <h3>claude.ai</h3>
+        <p class="route-note">Download <code class="inline">liquid-glass-card.zip</code> from the <a href="https://github.com/amir-afianian/pyamir.io/releases?q=liquid-glass-card">latest release</a>, then upload it in claude.ai's skill settings.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>The look is based on Stephan Zammit's After Effects tutorial <a href="https://www.youtube.com/watch?v=fJJ6YhaUWB8">Vibrant Glass UI</a>, rebuilt as a live WebGL shader.</p>
+    <p><a href="https://github.com/amir-afianian/pyamir.io/tree/main/liquid-glass-card">github.com/amir-afianian/pyamir.io</a> · MIT</p>
+  </footer>
+
+</div>
+</body>
+</html>

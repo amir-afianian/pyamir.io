@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "pyamir",
+  "description": "Agent skills by Amir Afianian, with live demos at pyamir.io.",
+  "owner": {
+    "name": "Amir Afianian",
+    "url": "https://github.com/amir-afianian"
+  },
+  "plugins": [
+    {
+      "name": "liquid-glass-card",
+      "source": "./liquid-glass-card",
+      "description": "Real refraction, not just blur: a WebGL liquid glass card with a specular rim and bounce-in, for web, SwiftUI and Claude Design.",
+      "category": "design"
+    }
+  ]
+}

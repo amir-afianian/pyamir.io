@@ -1,0 +1,20 @@
+{
+  "name": "pyamir",
+  "interface": {
+    "displayName": "pyamir"
+  },
+  "plugins": [
+    {
+      "name": "liquid-glass-card",
+      "source": {
+        "source": "local",
+        "path": "./liquid-glass-card"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+pyamir.io {
+	root * /srv/edge/www/pyamir.io
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Cache-Control "public, max-age=300"
+		-Server
+	}
+	file_server
+}

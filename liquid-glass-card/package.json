@@ -1,0 +1,14 @@
+{
+  "name": "liquid-glass-card",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "build:site": "node scripts/build-site.mjs",
+    "serve:site": "node scripts/serve-site.mjs",
+    "render:media": "node scripts/render-media.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}

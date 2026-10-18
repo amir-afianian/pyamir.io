@@ -1,0 +1,48 @@
+name: Bug report
+description: A skill produced something broken, or the playground misbehaves.
+labels: [bug]
+body:
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options:
+        - liquid-glass-card
+    validations:
+      required: true
+  - type: dropdown
+    id: host
+    attributes:
+      label: Where the agent ran
+      options:
+        - Claude Code
+        - Codex
+        - claude.ai
+        - Other (say which below)
+        - Not an agent issue (playground or template)
+    validations:
+      required: true
+  - type: input
+    id: prompt
+    attributes:
+      label: Prompt
+      description: What you asked the agent for, word for word.
+      placeholder: Make a liquid glass card showing MRR $48k
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what you expected
+      description: Screenshots help most. Paste the console error if the card is blank.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and OS
+      placeholder: Safari 19 on macOS 26, Chrome 141 on Android 16
+  - type: input
+    id: version
+    attributes:
+      label: Skill version
+      description: From `/plugin` in Claude Code, the Codex plugin list, or the release you downloaded.
+      placeholder: 1.0.0

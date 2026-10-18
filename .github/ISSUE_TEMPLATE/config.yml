@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Try the playground first
+    url: https://pyamir.io/liquid-glass-card/
+    about: Tune a card live and copy a share link into your issue, so we see exactly what you see.
+  - name: Report a security issue
+    url: https://github.com/amir-afianian/pyamir.io/security/advisories/new
+    about: Report vulnerabilities privately, not in a public issue.

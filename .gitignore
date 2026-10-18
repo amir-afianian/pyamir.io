@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+test-results/
+*.zip
+_site/
+.claude/
+dist/
+playwright-report/
+deploy/deploy.env

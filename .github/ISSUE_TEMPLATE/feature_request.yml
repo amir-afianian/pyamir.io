@@ -1,0 +1,25 @@
+name: Feature request
+description: A new card type, a platform, or a change to how a skill behaves.
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options:
+        - liquid-glass-card
+        - A new skill
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you are trying to build
+      description: The result you want, not the implementation. A reference image or link is worth a lot here.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How the skill could do it
+      description: Optional. Settings, a new preset, a platform target, anything you have in mind.
