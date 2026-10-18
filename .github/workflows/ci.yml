@@ -46,13 +46,14 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps --only-shell chromium
       - run: npx playwright test
-      - name: Upload Playwright artifacts
-        if: failure()
+      # Also after a green run: a test that failed once and passed on retry leaves its trace here.
+      - name: Upload Playwright traces of failed attempts
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
-          name: playwright-failure
+          name: playwright-failures
           path: |
-            liquid-glass-card/test-results/
-            liquid-glass-card/playwright-report/
+            liquid-glass-card/test-results/**/trace.zip
+            liquid-glass-card/test-results/**/error-context.md
           if-no-files-found: ignore
           retention-days: 7
