@@ -54,7 +54,7 @@ npm run render:media -- hero gallery  # or only some
 
 ## Deploying pyamir.io
 
-`sh scripts/deploy-pages.sh` builds the site (the root page plus each plugin's demo) and publishes it to https://pyamir.io. The server's Caddy imports `deploy/pyamir.io.caddy` from a folder outside any other app's release, so a deploy only uploads files and reloads Caddy, with no downtime. The host, Caddy container and that folder come from `deploy/deploy.env`, which is git-ignored; copy `deploy/deploy.env.example` to create it.
+`sh scripts/deploy-pages.sh` builds each plugin's demo and uploads it to the server's edge folder, where https://pyamir.io serves it at `/<plugin>/`. The domain itself, and its Caddy config, belong to the pyamir-site repo, so this deploy only uploads files, with no downtime. The host and the edge folder come from `deploy/deploy.env`, which is git-ignored; copy `deploy/deploy.env.example` to create it.
 
 ## Releases
 
